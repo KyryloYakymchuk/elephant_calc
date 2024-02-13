@@ -1,0 +1,1 @@
+export const CURRENT_MODAL = "CURRENT_MODAL";
