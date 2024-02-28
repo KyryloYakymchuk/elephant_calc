@@ -4,8 +4,12 @@ export const CattegoryWrapper = styled.div`
   padding-bottom: 120px;
 `;
 export const ItemContainer = styled.div`
+  max-width: 1071px;
   background-color: rgb(255, 255, 255);
-  margin: 20px;
+  margin: 20px auto;
+  @media (max-width: 968px) {
+    margin: 20px;
+  }
   border-radius: 10px;
   overflow: auto;
   max-height: 545px;
@@ -14,13 +18,14 @@ export const ItemContainer = styled.div`
   -moz-box-shadow: 6px 3px 35px -11px rgba(0, 0, 0, 0.75);
 
   * {
-    scrollbar-width: thin;
+    scrollbar-width: 6px;
     scrollbar-color: #c7c7c7 rgb(232, 237, 238);
   }
 
   /* Chrome, Edge, and Safari */
   &::-webkit-scrollbar {
-    width: 16px;
+    width: 10px;
+    height: 10px;
   }
 
   &::-webkit-scrollbar-track {
@@ -29,8 +34,6 @@ export const ItemContainer = styled.div`
 
   &::-webkit-scrollbar-thumb {
     background-color: #c7c7c7;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
   }
   .table-wrapper {
     display: ${({ expandedState }) => (expandedState ? "table;" : "none;")};
@@ -39,10 +42,23 @@ export const ItemContainer = styled.div`
     table {
       width: fit-content;
       border-left: 1px solid grey;
+
+      thead {
+        position: relative;
+        tr {
+          position: sticky;
+          background-color: white;
+          top: 60px;
+          z-index: 1;
+        }
+      }
       tr {
-        font-size: 18px;
+        font-size: 16px;
         line-height: 3;
         transition: 0.3s;
+        @media (max-width: 968px) {
+          font-size: 14px;
+        }
         &:hover {
           background-color: rgb(232, 237, 238);
           transition: 0.3s;
@@ -51,19 +67,23 @@ export const ItemContainer = styled.div`
         th {
           border-right: 1px solid grey;
           border-top: 1px solid grey;
+          line-height: normal;
+          padding: 10px 0;
         }
 
         .worktype {
-          width: 200px;
+          width: 350px;
+          min-width: 300px;
           color: rgba(34, 28, 23);
           font-weight: 400;
           border-bottom: 1px solid grey;
           border-right: 1px solid grey;
           text-align: start;
+          line-height: normal;
         }
         td {
-          padding: 20px 35px;
-          min-width: 120px;
+          padding: 20px 10px;
+          min-width: 75px;
           border-right: 1px solid grey;
           border-bottom: 1px solid grey;
           text-align: center;
@@ -91,9 +111,13 @@ export const ItemContainer = styled.div`
             }
           }
           input {
-            max-width: 80px;
+            background-color: transparent;
+            width: 80%;
             padding: 16px 8px 16px 8px;
             font-size: 14px;
+            @media (max-width: 968px) {
+              font-size: 12px;
+            }
             border: 1px solid grey;
             outline: none;
             /* margin-bottom: 10px; */
@@ -105,11 +129,9 @@ export const ItemContainer = styled.div`
   }
 `;
 
-export const QuantityTD = styled.td`
-  input {
-    background-color: ${({ quantity }) =>
-      quantity ? `rgb(232, 237, 238);` : "transparent"};
-  }
+export const TableTR = styled.tr`
+  background-color: ${({ quantity }) =>
+    quantity ? `rgb(232, 237, 238);` : "transparent"};
 `;
 
 export const ExpandAccordion = styled.div`
@@ -118,42 +140,72 @@ export const ExpandAccordion = styled.div`
   background-color: white;
   z-index: 3;
   font-size: 20px;
+
   font-weight: bold;
-  padding: 20px;
+  padding: 0 15px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  @media (max-width: 968px) {
+    font-size: 16px;
+    width: 100vh;
+    justify-content: unset;
+  }
   cursor: pointer;
   color: rgba(34, 28, 23);
-
   transition: 0.3s;
   span {
-    border-bottom: 1px solid transparent;
-    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    &:hover {
+      svg {
+        opacity: 1;
+        transition: 0.3s;
+      }
+    }
+    svg {
+      opacity: 0;
+      transition: 0.3s;
+    }
   }
-  &:hover {
-    span {
-      border-bottom: 1px solid rgba(34, 28, 23);
+  .category-title {
+    display: flex;
+    align-items: center;
+    p {
+      margin: 0;
+      border-bottom: 1px solid transparent;
+      transition: 0.3s;
+    }
+    &:hover {
+      p {
+        border-bottom: 1px solid rgba(34, 28, 23);
+      }
     }
   }
 `;
-export const FooterWrapper = styled.div`
-    position: sticky;
-    bottom: 0;
-    background-color: white;
-    display: flex;
-    align-items: center;
-`
+
 export const TotalSum = styled.div`
   display: flex;
   gap: 25px;
   padding: 20px;
-  font-weight: bold;
   font-size: 16px;
-  color: rgba(34, 28, 23);
-  u {
-    font-size: 20px;
+  @media (max-width: 968px) {
+    font-size: 14px;
+    gap: 10px;
   }
+  color: darkgrey;
+  u {
+    font-weight: bold;
+    font-size: 20px;
+    @media (max-width: 968px) {
+      font-size: 16px;
+    }
+  }
+`;
+export const ButtonWrapper = styled.div`
+  max-width: 1071px;
+  margin: 0 auto;
 `;
 
 export const StickyFooter = styled.div`
@@ -172,8 +224,10 @@ export const StickyFooter = styled.div`
 export const AddButton = styled.button`
   padding: 6px 16px;
   font-size: 36px;
+  @media (max-width: 968px) {
+    font-size: 24px;
+  }
   border-radius: 10px;
-  margin-left: 20px;
   background-color: rgb(255, 255, 255);
   box-shadow: 6px 3px 35px -11px rgba(0, 0, 0, 0.75);
   -webkit-box-shadow: 6px 3px 35px -11px rgba(0, 0, 0, 0.75);
@@ -197,6 +251,10 @@ export const TextField = styled.input`
   border: none;
   background-color: rgb(232, 237, 238);
   font-size: 20px;
+  max-width: 80%;
+  @media (max-width: 968px) {
+    font-size: 16px;
+  }
   font-weight: bold;
   color: rgba(34, 28, 23);
 `;
@@ -204,11 +262,14 @@ export const TextField = styled.input`
 export const TextFieldWrapper = styled.div`
   display: flex;
   align-items: center;
-  width: 70%;
+  /* width: 70%; */
   gap: 8px;
 `;
 export const Button = styled.button`
   font-size: 17px;
+  @media (max-width: 968px) {
+    font-size: 14px;
+  }
   background-color: transparent;
   border: none;
   cursor: pointer;

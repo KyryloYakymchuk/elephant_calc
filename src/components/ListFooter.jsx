@@ -1,53 +1,40 @@
 import React from "react";
-import { Button, TotalSum, FooterWrapper } from "../styles";
+import { Button } from "../styles";
 import { useDispatch } from "react-redux";
 import { updateListData } from "../store/actions/list";
-import { itemTemplate } from "../helpers/constants/listTemplates";
+import { generateRandomId } from "../helpers/functions/randomId";
 
 function ListFooter({ list }) {
   const dispatch = useDispatch();
-  const calcTotalPrice = () => {
-    let price2 = null;
-    let price3 = null;
-
-    list.items.map((item) => {
-      price2 += item.sumWithoutTax;
-      price3 += item.sumWithTax;
-    });
-
-    return (
-      <TotalSum>
-        <span>
-          Сума без ПДВ: <u>{price2?.toFixed(2) || 0}₴</u>
-        </span>
-        <span>
-          Сума з ПДВ: <u>{price3?.toFixed(2) || 0}₴</u>
-        </span>
-      </TotalSum>
-    );
+  const itemTemplate = {
+    id: generateRandomId(),
+    workType: "",
+    quantity: 0,
+    unit: "",
+    complexity: 1,
+    price: 0,
+    sumWithoutTax: 0,
+    sumWithTax: 0,
   };
-
   return (
-    <FooterWrapper>
-      {calcTotalPrice()}
-      <Button
-        onClick={() =>
-          dispatch(
-            updateListData({
-              id: list.id,
-              name: list.name,
-              items: list.items.concat(itemTemplate),
-            })
-          )
-        }
-        style={{
-          fontSize: "18px",
-          color: "darkred",
-        }}
-      >
-        Додати до списку
-      </Button>
-    </FooterWrapper>
+    <Button
+      onClick={() =>
+        dispatch(
+          updateListData({
+            id: list.id,
+            name: list.name,
+            items: list.items.concat(itemTemplate),
+          })
+        )
+      }
+      style={{
+        fontSize: "18px",
+        color: "darkred",
+        margin: "40px 20px",
+      }}
+    >
+      Додати до списку
+    </Button>
   );
 }
 

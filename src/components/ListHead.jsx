@@ -1,20 +1,49 @@
 import React from "react";
+import { TextField, TextFieldWrapper } from "../styles";
+import { useDispatch } from "react-redux";
+import { updateListData } from "../store/actions/list";
 
-function ListHead({ displayHead }) {
-  return displayHead ? (
+function ListHead({ list, isNewCattegory }) {
+  const dispatch = useDispatch();
+
+  const handleChangeTitles = (value, id) => {
+    const updatedTitles = list.titles.map((title) => {
+      if (title.id === id) {
+        return { ...title, name: value };
+      }
+      return title;
+    });
+
+    dispatch(
+      updateListData({
+        id: list.id,
+        name: list.name,
+        items: list.items,
+        titles: updatedTitles,
+      })
+    );
+  };
+  return (
     <thead>
       <tr>
-        <th>Види робіт</th>
-        <th>Кількість</th>
-        <th>Од. виміру</th>
-        <th>Коеф складності</th>
-        <th>Ціна</th>
-        <th>Сума без ПДВ</th>
-        <th>Сума з ПДВ</th>
+        {list.titles.map(({ name, id }) =>
+          isNewCattegory ? (
+            <th>{name}</th>
+          ) : (
+            <th>
+              <TextFieldWrapper style={{ width: "100%" }}>
+                <TextField
+                  type="text"
+                  placeholder="Вкажіть назву"
+                  value={name}
+                  onChange={(e) => handleChangeTitles(e.target.value, id)}
+                />
+              </TextFieldWrapper>
+            </th>
+          )
+        )}
       </tr>
     </thead>
-  ) : (
-    ""
   );
 }
 

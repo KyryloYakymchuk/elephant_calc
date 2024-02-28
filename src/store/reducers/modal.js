@@ -1,7 +1,7 @@
 import { CURRENT_MODAL } from "../constants/modal";
 
 const initialState = {
-  currentModal: { state: false, flag: "" },
+  currentModal: { state: false, flag: "", info: {} },
 };
 
 const modalReducer = (state = initialState, action) => {

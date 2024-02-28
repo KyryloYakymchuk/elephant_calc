@@ -1,4 +1,4 @@
-import { listTemplate } from "../../helpers/constants/listTemplates";
+import { generateRandomId } from "../../helpers/functions/randomId";
 import {
   ADD_NEW_CATTEGORY,
   DELETE_CATTEGORY,
@@ -10,6 +10,36 @@ const initialState = {
     {
       name: "Монтаж кондиціонера",
       id: 1,
+      titles: [
+        {
+          name: "Види робіт",
+          id: 1,
+        },
+        {
+          name: "Кількість",
+          id: 2,
+        },
+        {
+          name: "Од. виміру",
+          id: 3,
+        },
+        {
+          name: "Коеф складності",
+          id: 4,
+        },
+        {
+          name: "Ціна",
+          id: 5,
+        },
+        {
+          name: "Сума без ПДВ",
+          id: 6,
+        },
+        {
+          name: "Сума з ПДВ",
+          id: 7,
+        },
+      ],
       items: [
         {
           id: 1,
@@ -104,6 +134,36 @@ const initialState = {
     {
       name: "Додаткова фреонова магістраль ",
       id: 2,
+      titles: [
+        {
+          name: "Види робіт",
+          id: 1,
+        },
+        {
+          name: "Кількість",
+          id: 2,
+        },
+        {
+          name: "Од. виміру",
+          id: 3,
+        },
+        {
+          name: "Коеф складності",
+          id: 4,
+        },
+        {
+          name: "Ціна",
+          id: 5,
+        },
+        {
+          name: "Сума без ПДВ",
+          id: 6,
+        },
+        {
+          name: "Сума з ПДВ",
+          id: 7,
+        },
+      ],
       items: [
         {
           id: 1,
@@ -182,6 +242,36 @@ const initialState = {
     {
       name: "Додаткові матеріали з роботою",
       id: 3,
+      titles: [
+        {
+          name: "Види робіт",
+          id: 1,
+        },
+        {
+          name: "Кількість",
+          id: 2,
+        },
+        {
+          name: "Од. виміру",
+          id: 3,
+        },
+        {
+          name: "Коеф складності",
+          id: 4,
+        },
+        {
+          name: "Ціна",
+          id: 5,
+        },
+        {
+          name: "Сума без ПДВ",
+          id: 6,
+        },
+        {
+          name: "Сума з ПДВ",
+          id: 7,
+        },
+      ],
       items: [
         {
           id: 1,
@@ -260,6 +350,53 @@ const initialState = {
 };
 
 const listReducer = (state = initialState, action) => {
+  const listTemplate = {
+    name: "",
+    id: generateRandomId(),
+    titles: [
+      {
+        name: "Види робіт",
+        id: 1,
+      },
+      {
+        name: "Кількість",
+        id: 2,
+      },
+      {
+        name: "Од. виміру",
+        id: 3,
+      },
+      {
+        name: "Коеф складності",
+        id: 4,
+      },
+      {
+        name: "Ціна",
+        id: 5,
+      },
+      {
+        name: "Сума без ПДВ",
+        id: 6,
+      },
+      {
+        name: "Сума з ПДВ",
+        id: 7,
+      },
+    ],
+    items: [
+      {
+        id: generateRandomId(),
+        workType: "",
+        quantity: 0,
+        unit: "",
+        complexity: 1,
+        price: 0,
+        sumWithoutTax: 0,
+        sumWithTax: 0,
+      },
+    ],
+  };
+
   switch (action.type) {
     case UPDATE_LIST_ITEM:
       return {
@@ -286,8 +423,6 @@ const listReducer = (state = initialState, action) => {
 export default listReducer;
 
 const deleteCattegory = (payload, state) => {
-  console.log(payload);
-  console.log(state);
   return state.filter((item) => {
     if (item.id !== payload.id) {
       return { item };

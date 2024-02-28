@@ -7,32 +7,35 @@ import {
   CattegoryWrapper,
   StickyFooter,
   TotalSum,
+  ButtonWrapper,
 } from "./styles";
 import { addNewCattegory } from "./store/actions/list";
 import { generatePDF } from "./helpers/functions/saveToPDF";
+import Modal from "./components/Modal/Modal";
 
 function App() {
   const listState = useSelector((state) => state.listReducer.listData);
+  const modalState = useSelector((state) => state.modalReducer.currentModal);
   const dispatch = useDispatch();
 
   const calcTotalPrice = () => {
-    let price2 = 0;
-    let price3 = 0;
+    let sumWithoutTax = 0;
+    let sumWithTax = 0;
 
     listState.map((list) => {
       list.items.map((item) => {
-        price2 += item.sumWithoutTax;
-        price3 += item.sumWithTax;
+        sumWithoutTax += item.sumWithoutTax;
+        sumWithTax += item.sumWithTax;
       });
     });
 
     return (
-      <TotalSum>
+      <TotalSum style={{ color: "black", fontWeight: "bold" }}>
         <span>
-          Сума без ПДВ: <u>{price2.toFixed(2)}₴</u>
+          Сума без ПДВ: <u>{sumWithoutTax.toFixed(2)}₴</u>
         </span>
         <span>
-          Сума з ПДВ: <u>{price3.toFixed(2)}₴</u>
+          Сума з ПДВ: <u>{sumWithTax.toFixed(2)}₴</u>
         </span>
       </TotalSum>
     );
@@ -48,7 +51,9 @@ function App() {
         {listState?.map((list) => {
           return <ListCategory key={list.id} list={list} />;
         })}
-        <AddButton onClick={() => handleAddNewCattegory()}>+</AddButton>;
+        <ButtonWrapper>
+          <AddButton onClick={() => handleAddNewCattegory()}>+</AddButton>;
+        </ButtonWrapper>
       </CattegoryWrapper>
 
       <StickyFooter>
@@ -61,6 +66,7 @@ function App() {
           Зберегти в PDF
         </Button>
       </StickyFooter>
+      {modalState.state ? <Modal modalState={modalState} /> : <></>}
     </>
   );
 }

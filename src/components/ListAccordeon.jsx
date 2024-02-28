@@ -9,61 +9,102 @@ import { useDispatch } from "react-redux";
 import { deleteCattegory, updateListData } from "../store/actions/list";
 import ChevronDown from "../assets/ChevronDown";
 import ChevronRight from "../assets/ChevronRight";
+import { calcTotalPrice } from "../helpers/functions/calcPrice";
+import EditIcon from "../assets/EditIcon";
+import DeleteIcon from "../assets/DeleteIcon";
+import { setCurrentModal } from "../store/actions/modal";
 
 function ListAccordeon({ list, setExpandedState, expandedState }) {
   const [cattegoryName, setCattegoryName] = useState("");
-
+  const [displayEditItem, setDisplayEditItem] = useState({
+    target: "",
+    id: null,
+  });
   const dispatch = useDispatch();
 
-  const handleCattegoryChange = (e) => {
+  const handleCattegoryChange = (e, id) => {
     e.stopPropagation();
     dispatch(
       updateListData({
-        id: list.id,
+        id: id,
         name: cattegoryName,
         items: list.items,
+        titles: list.titles,
+      })
+    );
+    setCattegoryName("");
+    setDisplayEditItem({
+      target: "",
+      id: null,
+    });
+  };
+  const handleCattegoryDelete = (e, id) => {
+    e.stopPropagation();
+    dispatch(
+      deleteCattegory({
+        id,
       })
     );
     setCattegoryName("");
   };
-  const handleCattegoryDelete = (e) => {
+
+  const editItem = (target, id, name, e) => {
+    e.stopPropagation();
+    setCattegoryName(name);
+    setDisplayEditItem({
+      target,
+      id,
+    });
+  };
+  const displayModal = (e, id, name) => {
     e.stopPropagation();
     dispatch(
-      deleteCattegory({
-        id: list.id,
+      setCurrentModal({
+        state: true,
+        flag: "delete_cattegory",
+        info: { id, name },
       })
     );
-    setCattegoryName("");
   };
   return (
     <ExpandAccordion
       onClick={() => (list.name ? setExpandedState(!expandedState) : false)}
     >
-      {list.name ? (
-        <span>{list.name}</span>
-      ) : (
-        <TextFieldWrapper>
+      {displayEditItem.id === list.id || !list.name ? (
+        <TextFieldWrapper style={{ padding: "10px 0" }}>
           <TextField
             type="text"
             placeholder="Вкажіть назву категорії"
-            value={list.name || cattegoryName}
+            value={cattegoryName || list.name}
             onChange={(e) => setCattegoryName(e.target.value)}
           />
-          <Button onClick={(e) => handleCattegoryChange(e, "name")}>
-            Зберегти
-          </Button>
-          <Button
-            style={{
-              color: "darkred",
-            }}
-            onClick={(e) => handleCattegoryDelete(e)}
-          >
-            Відміна
-          </Button>
+          <Button onClick={(e) => handleCattegoryChange(e, list.id)}>✔</Button>
+          {!list.name && (
+            <Button
+              style={{
+                color: "darkred",
+              }}
+              onClick={(e) => handleCattegoryDelete(e, list.id)}
+            >
+              Відміна
+            </Button>
+          )}
         </TextFieldWrapper>
+      ) : (
+        <span>
+          {list.name}
+          <EditIcon onClick={(e) => editItem("name", list.id, list.name, e)} />
+          <DeleteIcon onClick={(e) => displayModal(e, list.id, list.name)} />
+        </span>
       )}
-
-      {expandedState ? <ChevronDown /> : <ChevronRight />}
+      {list.name ? (
+        <div className="category-title">
+          {calcTotalPrice(list.items)}
+          {expandedState ? <ChevronDown /> : <ChevronRight />}
+        </div>
+      ) : (
+        ""
+      )}
     </ExpandAccordion>
   );
 }

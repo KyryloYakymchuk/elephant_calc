@@ -8,7 +8,7 @@ import ListAccordeon from "./ListAccordeon";
 import ListFooter from "./ListFooter";
 
 const ListItems = ({ list }) => {
-  const [expandedState, setExpandedState] = useState(false);
+  const [expandedState, setExpandedState] = useState(true);
 
   return (
     <ItemContainer expandedState={expandedState}>
@@ -19,7 +19,7 @@ const ListItems = ({ list }) => {
       />
       <div className="table-wrapper">
         <table>
-          <ListHead displayHead={list.items.length} />
+          <ListHead list={list} isNewCattegory={list.name} />
           <ListBody list={list} />
         </table>
         <ListFooter list={list} />
