@@ -41,7 +41,7 @@ function ListBody({ list }) {
       updatedItems[index].complexity;
     updatedItems[index].sumWithoutTax = sumWithoutTax;
     updatedItems[index].sumWithTax =
-      sumWithoutTax * updatedItems[index].complexity;
+      sumWithoutTax * 1.2;
 
     dispatch(
       updateListData({
