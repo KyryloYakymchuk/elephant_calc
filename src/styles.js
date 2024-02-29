@@ -191,6 +191,7 @@ export const TotalSum = styled.div`
   padding: 20px;
   font-size: 16px;
   @media (max-width: 968px) {
+    flex-direction: column;
     font-size: 14px;
     gap: 10px;
   }
@@ -203,9 +204,23 @@ export const TotalSum = styled.div`
     }
   }
 `;
-export const ButtonWrapper = styled.div`
+export const PageWrapper = styled.div`
   max-width: 1071px;
   margin: 0 auto;
+`;
+
+export const ButtonWrapper = styled.div`
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+  }
 `;
 
 export const StickyFooter = styled.div`
@@ -219,6 +234,7 @@ export const StickyFooter = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  z-index: 3;
 `;
 
 export const AddButton = styled.button`

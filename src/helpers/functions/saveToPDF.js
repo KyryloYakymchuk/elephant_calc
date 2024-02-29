@@ -10,7 +10,7 @@ pdfMake.fonts = {
     bolditalics: "NimbusSanL-BolIta.otf",
   },
 };
-export const generatePDF = (listState) => {
+export const generatePDF = (listState, pdfFieldsSettings) => {
   let exportedData = listState.map((list) => {
     return {
       ...list,
@@ -64,49 +64,74 @@ export const generatePDF = (listState) => {
 
   exportedData.map((data) => {
     if (data.items.length) {
-      let tableHead = data.titles.map(({ name }) => ({
-        text: name,
-        style: "tableHeader",
-      }));
+      // let tableHead = data.titles.map(({ name }) => ({
+      //   text: name,
+      //   style: "tableHeader",
+      // }));
+      let tableHead = data.titles
+      .map(({ name }) => {
+        if (
+          name !== "Коеф складності" &&
+          (
+            !(!pdfFieldsSettings.priceWithTAX && name === "Сума з ПДВ") &&
+            !(!pdfFieldsSettings.priceWithoutTAX && name === "Сума без ПДВ")
+          )
+        ) {
+          return {
+            text: name,
+            style: "tableHeader",
+            alignment: "center",
+          };
+        }
+      })
+      .filter((item) => item !== undefined);
+
       let tableBody = data.items.map(
         ({
           workType,
           quantity,
           unit,
-          complexity,
           price,
           sumWithoutTax,
           sumWithTax,
         }) => {
-          return [
+          const bodyRow = [
             workType,
             quantity,
             unit,
-            complexity.toString(),
-            price.toFixed(0).toString() + "грн",
-            sumWithoutTax.toFixed(0).toString() + "грн",
-            sumWithTax.toFixed(0).toString() + "грн",
+            price.toFixed(0) + "грн",
           ];
+      
+          if (pdfFieldsSettings.priceWithTAX) {
+            bodyRow.push(sumWithTax.toFixed(0) + "грн");
+          }
+      
+          if (pdfFieldsSettings.priceWithoutTAX) {
+            bodyRow.push(sumWithoutTax.toFixed(0) + "грн");
+          }
+      
+          return bodyRow;
         }
       );
 
       docDefinition.content.push({
         style: "tableExample",
+        alignment: "center",
         table: {
           headerRows: 1,
           body: [tableHead, ...tableBody],
         },
       });
 
-      docDefinition.content.push({
-        text: `Ціна за ${data.name} - БЕЗ ПДВ: ${
-          calcPrice(data.items).sumWithoutTax
-        }грн, З ПДВ: ${calcPrice(data.items).sumWithTax}грн`,
-        style: "subheader",
-        color: "black",
-        fontSize: 10,
-        alignment: "right",
-      });
+      // docDefinition.content.push({
+      //   text: `Ціна за ${data.name} - БЕЗ ПДВ: ${
+      //     calcPrice(data.items).sumWithoutTax
+      //   }грн, З ПДВ: ${calcPrice(data.items).sumWithTax}грн`,
+      //   style: "subheader",
+      //   color: "black",
+      //   fontSize: 10,
+      //   alignment: "right",
+      // });
     }
   });
   docDefinition.content.push({
@@ -115,9 +140,8 @@ export const generatePDF = (listState) => {
     }грн, З ПДВ: ${calcTotalPrice(listState).sumWithTax}грн`,
 
     style: "subheader",
-    color: "blue",
     margin: [0, 20],
-    fontSize: 10,
+    fontSize: 12,
     alignment: "right",
   });
 
@@ -129,20 +153,20 @@ export const generatePDF = (listState) => {
   pdfMake.createPdf(docDefinition).download();
 };
 
-const calcPrice = (items) => {
-  let sumWithoutTax = 0;
-  let sumWithTax = 0;
+// const calcPrice = (items) => {
+//   let sumWithoutTax = 0;
+//   let sumWithTax = 0;
 
-  items.map((item) => {
-    sumWithoutTax += item.sumWithoutTax;
-    sumWithTax += item.sumWithTax;
-  });
+//   items.map((item) => {
+//     sumWithoutTax += item.sumWithoutTax;
+//     sumWithTax += item.sumWithTax;
+//   });
 
-  return {
-    sumWithoutTax: sumWithoutTax.toFixed(2),
-    sumWithTax: sumWithTax.toFixed(2),
-  };
-};
+//   return {
+//     sumWithoutTax: sumWithoutTax.toFixed(2),
+//     sumWithTax: sumWithTax.toFixed(2),
+//   };
+// };
 
 const calcTotalPrice = (listState) => {
   let sumWithoutTax = 0;

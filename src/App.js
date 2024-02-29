@@ -7,8 +7,9 @@ import {
   CattegoryWrapper,
   StickyFooter,
   TotalSum,
-  ButtonWrapper,
+  PageWrapper,
   TextField,
+  ButtonWrapper,
 } from "./styles";
 import { addNewCattegory } from "./store/actions/list";
 import { generatePDF } from "./helpers/functions/saveToPDF";
@@ -21,7 +22,10 @@ function App() {
   const dispatch = useDispatch();
   const [filteredState, setFilteredState] = useState(listState);
   const [filterTerm, setFilterTerm] = useState("");
-
+  const [pdfFieldsSettings, setPdfFieldsSettings] = useState({
+    priceWithTAX: true,
+    priceWithoutTAX: true,
+  });
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
       let filteredList = listState.filter(
@@ -71,33 +75,70 @@ function App() {
   return (
     <>
       <CattegoryWrapper>
-        <ButtonWrapper>
-            <TextField
-              style={{ backgroundColor:'white',maxWidth:'94%',margin:'20px' }}
-              type="text"
-              placeholder='Пошук...'
-              value={filterTerm}
-              onChange={handleFilterChange}
-            />
-        </ButtonWrapper>
+        <PageWrapper>
+          <TextField
+            style={{
+              backgroundColor: "white",
+              margin: "20px",
+            }}
+            type="text"
+            placeholder="Пошук..."
+            value={filterTerm}
+            onChange={handleFilterChange}
+          />
+        </PageWrapper>
 
         {filteredState.map((list) => {
           return <ListCategory key={list.id} list={list} />;
         })}
-        <ButtonWrapper>
+        <PageWrapper>
           <AddButton onClick={() => handleAddNewCattegory()}>+</AddButton>;
-        </ButtonWrapper>
+        </PageWrapper>
       </CattegoryWrapper>
 
       <StickyFooter>
         {calcTotalPrice()}
 
-        <Button
-          style={{ marginRight: "20px" }}
-          onClick={() => generatePDF(listState)}
-        >
-          Зберегти в PDF
-        </Button>
+        <ButtonWrapper>
+          <div>
+            <label htmlFor="priceWithTAX">
+              <input
+                id="priceWithTAX"
+                type="checkbox"
+                onChange={() =>
+                  setPdfFieldsSettings((state) => ({
+                    ...state,
+                    priceWithTAX: !state.priceWithTAX,
+                  }))
+                }
+                checked={pdfFieldsSettings.priceWithTAX}
+              />
+              Ціна з ПДФ
+            </label>
+
+            <label htmlFor="priceWithoutTAX">
+              <input
+                id="priceWithoutTAX"
+                type="checkbox"
+                onChange={() =>
+                  setPdfFieldsSettings((state) => ({
+                    ...state,
+                    priceWithoutTAX: !state.priceWithoutTAX,
+                  }))
+                }
+                checked={pdfFieldsSettings.priceWithoutTAX}
+              />
+              Ціна без ПДФ
+            </label>
+          </div>
+
+          <Button
+            style={{ marginRight: "20px", border: "1px solid black" }}
+            onClick={() => generatePDF(listState, pdfFieldsSettings)}
+          >
+            Зберегти в PDF
+          </Button>
+        </ButtonWrapper>
       </StickyFooter>
       {modalState.state ? <Modal modalState={modalState} /> : <></>}
     </>
