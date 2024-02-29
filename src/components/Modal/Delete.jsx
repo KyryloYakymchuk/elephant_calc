@@ -5,25 +5,14 @@ import {
   ModalButtonsWrapper,
   ModalButton,
 } from "./styles";
-import { deleteCattegory } from "../../store/actions/list";
 
-function Delete({ modalState, title, closeModal, dispatch }) {
-  const handleCattegoryDelete = (id) => {
-    dispatch(
-      deleteCattegory({
-        id,
-      })
-    );
-  };
-
+function Delete({ modalState, title, closeModal, action }) {
   return (
     <ModalContent>
       <ModalTitle>{title}</ModalTitle>
       <ModalButtonsWrapper>
         <ModalButton
-          onClick={() => (
-            closeModal(), handleCattegoryDelete(modalState.info.id)
-          )}
+          onClick={() => (closeModal(), action(modalState.info))}
           style={{
             color: "black",
             backgroundColor: "white",

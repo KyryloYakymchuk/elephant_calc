@@ -1,7 +1,8 @@
 import {
   ADD_NEW_CATTEGORY,
   UPDATE_LIST_ITEM,
-  DELETE_CATTEGORY
+  DELETE_CATTEGORY,
+  DELETE_CATTEGORY_ITEM
 } from "../constants/list";
 
 export const updateListData = (payload) => ({
@@ -15,5 +16,9 @@ export const addNewCattegory = (payload) => ({
 
 export const deleteCattegory = (payload) => ({
   type: DELETE_CATTEGORY,
+  payload,
+});
+export const deleteCattegoryItem = (payload) => ({
+  type: DELETE_CATTEGORY_ITEM,
   payload,
 });

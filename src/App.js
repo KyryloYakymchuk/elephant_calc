@@ -8,15 +8,38 @@ import {
   StickyFooter,
   TotalSum,
   ButtonWrapper,
+  TextField,
 } from "./styles";
 import { addNewCattegory } from "./store/actions/list";
 import { generatePDF } from "./helpers/functions/saveToPDF";
 import Modal from "./components/Modal/Modal";
+import { useEffect, useState } from "react";
 
 function App() {
   const listState = useSelector((state) => state.listReducer.listData);
   const modalState = useSelector((state) => state.modalReducer.currentModal);
   const dispatch = useDispatch();
+  const [filteredState, setFilteredState] = useState(listState);
+  const [filterTerm, setFilterTerm] = useState("");
+
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      let filteredList = listState.filter(
+        (item) =>
+          item.name.toLowerCase().includes(filterTerm.toLowerCase()) ||
+          item.items.some((work) =>
+            work.workType.toLowerCase().includes(filterTerm.toLowerCase())
+          )
+      );
+      setFilteredState(filteredList);
+    }, 300);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [filterTerm, listState]);
+
+  const handleFilterChange = (event) => {
+    setFilterTerm(event.target.value);
+  };
 
   const calcTotalPrice = () => {
     let sumWithoutTax = 0;
@@ -48,7 +71,17 @@ function App() {
   return (
     <>
       <CattegoryWrapper>
-        {listState?.map((list) => {
+        <ButtonWrapper>
+            <TextField
+              style={{ backgroundColor:'white',maxWidth:'94%',margin:'20px' }}
+              type="text"
+              placeholder='Пошук...'
+              value={filterTerm}
+              onChange={handleFilterChange}
+            />
+        </ButtonWrapper>
+
+        {filteredState.map((list) => {
           return <ListCategory key={list.id} list={list} />;
         })}
         <ButtonWrapper>

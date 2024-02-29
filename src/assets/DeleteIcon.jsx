@@ -1,8 +1,9 @@
 import React from "react";
 
-function DeleteIcon({ onClick }) {
+function DeleteIcon({ onClick, style }) {
   return (
     <svg
+      style={style}
       onClick={onClick}
       width="23px"
       viewBox="0 -0.5 21 21"

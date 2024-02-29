@@ -9,6 +9,8 @@ import {
 import { useDispatch } from "react-redux";
 import { updateListData } from "../store/actions/list";
 import EditIcon from "../assets/EditIcon";
+import DeleteIcon from "../assets/DeleteIcon";
+import { setCurrentModal } from "../store/actions/modal";
 
 function ListBody({ list }) {
   const [displayEditItem, setDisplayEditItem] = useState({
@@ -40,8 +42,7 @@ function ListBody({ list }) {
       updatedItems[index].quantity *
       updatedItems[index].complexity;
     updatedItems[index].sumWithoutTax = sumWithoutTax;
-    updatedItems[index].sumWithTax =
-      sumWithoutTax * 1.2;
+    updatedItems[index].sumWithTax = sumWithoutTax * 1.2;
 
     dispatch(
       updateListData({
@@ -74,6 +75,16 @@ function ListBody({ list }) {
       id,
     });
   };
+  const displayModal = (e, id, name, listId) => {
+    e.stopPropagation();
+    dispatch(
+      setCurrentModal({
+        state: true,
+        flag: "delete_item_from_catterory",
+        info: { id, name, listId },
+      })
+    );
+  };
 
   return (
     <tbody>
@@ -83,6 +94,12 @@ function ListBody({ list }) {
             <td className="worktype">
               {item.workType}{" "}
               <EditIcon onClick={() => editItem("workType", item.id)} />
+              <DeleteIcon
+                onClick={(e) =>
+                  displayModal(e, item.id, item.workType, list.id)
+                }
+                style={{ transform: "translateY(118%)", right: "8px" }}
+              />
             </td>
           ) : (
             <td>

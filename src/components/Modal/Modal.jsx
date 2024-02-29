@@ -4,11 +4,29 @@ import CloseIcon from "../../assets/CloseIcon";
 import { useDispatch } from "react-redux";
 import { setCurrentModal } from "../../store/actions/modal";
 import Delete from "./Delete";
+import { deleteCattegory, deleteCattegoryItem } from "../../store/actions/list";
 
 function Modal({ modalState }) {
   const dispatch = useDispatch();
   const closeModal = () => {
     dispatch(setCurrentModal({ state: false, flag: "", info: {} }));
+  };
+  console.log(modalState);
+  const actions = {
+    deleteCattegory: (info) => {
+      dispatch(
+        deleteCattegory({
+          id: info.id,
+        })
+      );
+    },
+    deleteCattegoryItem: (info) => {
+      dispatch(
+        deleteCattegoryItem({
+          info,
+        })
+      );
+    },
   };
   return (
     <ModalWrapper>
@@ -22,10 +40,18 @@ function Modal({ modalState }) {
                   modalState={modalState}
                   title={`Видалити категорію: "${modalState.info.name}" ?`}
                   closeModal={closeModal}
-                  dispatch={dispatch}
+                  action={actions.deleteCattegory}
                 />
               );
-
+            case "delete_item_from_catterory":
+              return (
+                <Delete
+                  modalState={modalState}
+                  title={`Видалити: "${modalState.info.name}" ?`}
+                  closeModal={closeModal}
+                  action={actions.deleteCattegoryItem}
+                />
+              );
             default:
               return null;
           }

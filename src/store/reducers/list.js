@@ -2,6 +2,7 @@ import { generateRandomId } from "../../helpers/functions/randomId";
 import {
   ADD_NEW_CATTEGORY,
   DELETE_CATTEGORY,
+  DELETE_CATTEGORY_ITEM,
   UPDATE_LIST_ITEM,
 } from "../constants/list";
 
@@ -413,6 +414,11 @@ const listReducer = (state = initialState, action) => {
         ...state,
         listData: deleteCattegory(action.payload, state.listData),
       };
+    case DELETE_CATTEGORY_ITEM:
+      return {
+        ...state,
+        listData: deleteCattegoryItem(action.payload, state.listData),
+      };
     default:
       return {
         ...state,
@@ -429,6 +435,19 @@ const deleteCattegory = (payload, state) => {
     }
   });
 };
+
+const deleteCattegoryItem = (payload, state) => {
+  return state.map((item) => {
+    if (item.id === payload.info.listId) {
+      return {
+        ...item,
+        items: item.items.filter(({ id }) => id !== payload.info.id),
+      };
+    }
+    return item;
+  });
+};
+
 const editItem = (payload, state) => {
   return state.map((item) => {
     if (item.id === payload.id) {
