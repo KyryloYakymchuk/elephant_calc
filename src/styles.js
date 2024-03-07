@@ -50,6 +50,9 @@ export const ItemContainer = styled.div`
           background-color: white;
           top: 60px;
           z-index: 1;
+          @media (max-width: 968px) {
+            top: 80px;
+          }
         }
       }
       tr {
@@ -148,7 +151,7 @@ export const ExpandAccordion = styled.div`
   justify-content: space-between;
   @media (max-width: 968px) {
     font-size: 16px;
-    width: 100vh;
+    width: 120vh;
     justify-content: unset;
   }
   cursor: pointer;
