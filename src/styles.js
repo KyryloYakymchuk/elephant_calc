@@ -78,7 +78,7 @@ export const ItemContainer = styled.div`
           width: 350px;
           min-width: 300px;
           color: rgba(34, 28, 23);
-          font-weight: 400;
+          font-weight: 600;
           border-bottom: 1px solid grey;
           border-right: 1px solid grey;
           text-align: start;
@@ -89,6 +89,7 @@ export const ItemContainer = styled.div`
           min-width: 75px;
           border-right: 1px solid grey;
           border-bottom: 1px solid grey;
+          font-weight: 600;
           text-align: center;
           position: relative;
 
@@ -117,11 +118,13 @@ export const ItemContainer = styled.div`
             background-color: transparent;
             width: 80%;
             padding: 16px 8px 16px 8px;
-            font-size: 14px;
+            font-size: 16px;
+            font-weight: 600;
             @media (max-width: 968px) {
-              font-size: 12px;
+              font-size: 14px;
             }
-            border: 1px solid grey;
+            color: black;
+            border: 1.5px solid black;
             outline: none;
             /* margin-bottom: 10px; */
             border-radius: 10px;
