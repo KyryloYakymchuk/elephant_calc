@@ -9,6 +9,7 @@ import ListFooter from "./ListFooter";
 
 const ListItems = ({ list }) => {
   const [expandedState, setExpandedState] = useState(true);
+  const [editedTitles, setEditedTitles] = useState({});
 
   return (
     <ItemContainer expandedState={expandedState}>
@@ -16,10 +17,17 @@ const ListItems = ({ list }) => {
         list={list}
         setExpandedState={setExpandedState}
         expandedState={expandedState}
+        editedTitles={editedTitles}
+        setEditedTitles={setEditedTitles}
       />
       <div className="table-wrapper">
         <table>
-          <ListHead list={list} isNewCattegory={list.name} />
+          <ListHead
+            list={list}
+            isNewCattegory={list.name}
+            editedTitles={editedTitles}
+            setEditedTitles={setEditedTitles}
+          />
           <ListBody list={list} />
         </table>
         <ListFooter list={list} />

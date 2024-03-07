@@ -2,7 +2,8 @@ import {
   ADD_NEW_CATTEGORY,
   UPDATE_LIST_ITEM,
   DELETE_CATTEGORY,
-  DELETE_CATTEGORY_ITEM
+  DELETE_CATTEGORY_ITEM,
+  SET_LIST_FROM_FB
 } from "../constants/list";
 
 export const updateListData = (payload) => ({
@@ -20,5 +21,10 @@ export const deleteCattegory = (payload) => ({
 });
 export const deleteCattegoryItem = (payload) => ({
   type: DELETE_CATTEGORY_ITEM,
+  payload,
+});
+
+export const setListFBData = (payload) => ({
+  type: SET_LIST_FROM_FB,
   payload,
 });

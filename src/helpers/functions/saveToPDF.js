@@ -114,6 +114,8 @@ export const generatePDF = (listState, pdfFieldsSettings) => {
         }
       );
 
+      console.log(tableBody);
+      console.log(tableHead);
       docDefinition.content.push({
         style: "tableExample",
         alignment: "center",

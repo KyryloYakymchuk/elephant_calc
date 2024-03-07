@@ -14,7 +14,13 @@ import EditIcon from "../assets/EditIcon";
 import DeleteIcon from "../assets/DeleteIcon";
 import { setCurrentModal } from "../store/actions/modal";
 
-function ListAccordeon({ list, setExpandedState, expandedState }) {
+function ListAccordeon({
+  list,
+  setExpandedState,
+  expandedState,
+  editedTitles,
+  setEditedTitles,
+}) {
   const [cattegoryName, setCattegoryName] = useState("");
   const [displayEditItem, setDisplayEditItem] = useState({
     target: "",
@@ -24,12 +30,20 @@ function ListAccordeon({ list, setExpandedState, expandedState }) {
 
   const handleCattegoryChange = (e, id) => {
     e.stopPropagation();
+
+    const updatedTitles = list.titles.map((title) => {
+      if (editedTitles[title.id]) {
+        return { ...title, name: editedTitles[title.id].name };
+      }
+      return title;
+    });
+    setEditedTitles({});
     dispatch(
       updateListData({
         id: id,
         name: cattegoryName,
         items: list.items,
-        titles: list.titles,
+        titles: updatedTitles,
       })
     );
     setCattegoryName("");

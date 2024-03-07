@@ -1,41 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 import { TextField, TextFieldWrapper } from "../styles";
-import { useDispatch } from "react-redux";
-import { updateListData } from "../store/actions/list";
 
-function ListHead({ list, isNewCattegory }) {
-  const dispatch = useDispatch();
-
+function ListHead({ list, isNewCattegory, editedTitles, setEditedTitles }) {
   const handleChangeTitles = (value, id) => {
-    const updatedTitles = list.titles.map((title) => {
-      if (title.id === id) {
-        return { ...title, name: value };
-      }
-      return title;
-    });
-
-    dispatch(
-      updateListData({
-        id: list.id,
-        name: list.name,
-        items: list.items,
-        titles: updatedTitles,
-      })
-    );
+    setEditedTitles((prev) => ({
+      ...prev,
+      [id]: { ...prev[id], name: value },
+    }));
   };
+
   return (
     <thead>
       <tr>
         {list.titles.map(({ name, id }) =>
+          name === "Ціна" ||
+          name === "Сума без ПДВ" ||
+          name === "Сума з ПДВ" ||
           isNewCattegory ? (
-            <th>{name}</th>
+            <th key={id}>{name}</th>
           ) : (
-            <th>
+            <th key={id}>
               <TextFieldWrapper style={{ width: "100%" }}>
                 <TextField
                   type="text"
                   placeholder="Вкажіть назву"
-                  value={name}
+                  value={editedTitles[id]?.name || name || ""}
                   onChange={(e) => handleChangeTitles(e.target.value, id)}
                 />
               </TextFieldWrapper>

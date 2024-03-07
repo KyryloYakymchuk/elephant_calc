@@ -11,10 +11,12 @@ import {
   TextField,
   ButtonWrapper,
 } from "./styles";
-import { addNewCattegory } from "./store/actions/list";
+import { addNewCattegory, setListFBData } from "./store/actions/list";
 import { generatePDF } from "./helpers/functions/saveToPDF";
 import Modal from "./components/Modal/Modal";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { Context } from "./index";
 
 function App() {
   const listState = useSelector((state) => state.listReducer.listData);
@@ -26,9 +28,11 @@ function App() {
     priceWithTAX: true,
     priceWithoutTAX: true,
   });
+
+  const { db } = useContext(Context);
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
-      let filteredList = listState.filter(
+      let filteredList = listState?.filter(
         (item) =>
           item.name.toLowerCase().includes(filterTerm.toLowerCase()) ||
           item.items.some((work) =>
@@ -49,7 +53,7 @@ function App() {
     let sumWithoutTax = 0;
     let sumWithTax = 0;
 
-    listState.map((list) => {
+    listState?.map((list) => {
       list.items.map((item) => {
         sumWithoutTax += item.sumWithoutTax;
         sumWithTax += item.sumWithTax;
@@ -72,6 +76,29 @@ function App() {
     dispatch(addNewCattegory());
   };
 
+  useEffect(async () => {
+    const docRef = doc(db, `listData`, "listData");
+    const docSnap = await getDoc(docRef);
+    dispatch(setListFBData(docSnap.data().listData));
+  }, []);
+
+  useEffect(() => {
+    if (listState.length) {
+      const updatedListState = listState.map((item) => ({
+        ...item,
+        items: item.items.map((subItem) => ({
+          ...subItem,
+          quantity: 0,
+          complexity: 1,
+        })),
+      }));
+
+      setDoc(doc(db, `listData`, "listData"), {
+        listData: updatedListState,
+      });
+    }
+  }, [listState]);
+
   return (
     <>
       <CattegoryWrapper>
@@ -88,7 +115,7 @@ function App() {
           />
         </PageWrapper>
 
-        {filteredState.map((list) => {
+        {filteredState?.map((list) => {
           return <ListCategory key={list.id} list={list} />;
         })}
         <PageWrapper>
