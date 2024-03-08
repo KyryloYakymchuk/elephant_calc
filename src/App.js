@@ -97,6 +97,8 @@ function App() {
           ...subItem,
           quantity: 0,
           complexity: 1,
+          sumWithTax: 0,
+          sumWithoutTax: 0,
         })),
       }));
 
@@ -140,7 +142,7 @@ function App() {
             }}
           >
             <option selected disabled value="Працівник">
-            Працівник
+              Працівник
             </option>
             {users?.map((user) => (
               <option value={JSON.stringify(user)}>{user.name}</option>
