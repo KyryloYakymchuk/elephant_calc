@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/elephant_calc/static/css/main.60038cfd.css",
-    "main.js": "/elephant_calc/static/js/main.8064e7fc.js",
+    "main.js": "/elephant_calc/static/js/main.d9452694.js",
     "index.html": "/elephant_calc/index.html",
     "main.60038cfd.css.map": "/elephant_calc/static/css/main.60038cfd.css.map",
-    "main.8064e7fc.js.map": "/elephant_calc/static/js/main.8064e7fc.js.map"
+    "main.d9452694.js.map": "/elephant_calc/static/js/main.d9452694.js.map"
   },
   "entrypoints": [
     "static/css/main.60038cfd.css",
-    "static/js/main.8064e7fc.js"
+    "static/js/main.d9452694.js"
   ]
 }
