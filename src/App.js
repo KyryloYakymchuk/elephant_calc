@@ -10,6 +10,7 @@ import {
   PageWrapper,
   TextField,
   ButtonWrapper,
+  SelectOption,
 } from "./styles";
 import { addNewCattegory, setListFBData } from "./store/actions/list";
 import { generatePDF } from "./helpers/functions/saveToPDF";
@@ -24,11 +25,12 @@ function App() {
   const dispatch = useDispatch();
   const [filteredState, setFilteredState] = useState(listState);
   const [filterTerm, setFilterTerm] = useState("");
+  const [users, setUsers] = useState([]);
+  const [selectdUser, setSelectedUser] = useState({});
   const [pdfFieldsSettings, setPdfFieldsSettings] = useState({
     priceWithTAX: true,
     priceWithoutTAX: true,
   });
-
   const { db } = useContext(Context);
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
@@ -61,7 +63,9 @@ function App() {
     });
 
     return (
-      <TotalSum style={{ color: "black", fontWeight: "bold" }}>
+      <TotalSum
+        style={{ color: "black", fontWeight: "bold", flexDirection: "column" }}
+      >
         <span>
           Сума без ПДВ: <u>{sumWithoutTax.toFixed(2)}₴</u>
         </span>
@@ -80,6 +84,7 @@ function App() {
     const docRef = doc(db, `listData`, "listData");
     const docSnap = await getDoc(docRef);
     dispatch(setListFBData(docSnap.data().listData));
+    setUsers(docSnap.data().users);
   }, []);
 
   useEffect(() => {
@@ -127,6 +132,18 @@ function App() {
         {calcTotalPrice()}
 
         <ButtonWrapper>
+          <SelectOption
+            onChange={(e) => {
+              setSelectedUser(JSON.parse(e.target.value));
+            }}
+          >
+            <option selected disabled value="Працівник">
+            Працівник
+            </option>
+            {users?.map((user) => (
+              <option value={JSON.stringify(user)}>{user.name}</option>
+            ))}
+          </SelectOption>
           <div>
             <label htmlFor="priceWithTAX">
               <input
@@ -158,10 +175,12 @@ function App() {
               Ціна без ПДФ
             </label>
           </div>
-
           <Button
+            disabled={!selectdUser.name}
             style={{ marginRight: "20px", border: "1px solid black" }}
-            onClick={() => generatePDF(listState, pdfFieldsSettings)}
+            onClick={() =>
+              generatePDF(listState, pdfFieldsSettings, selectdUser)
+            }
           >
             Зберегти в PDF
           </Button>

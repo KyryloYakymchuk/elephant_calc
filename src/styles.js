@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import App from "./App";
 
 export const CattegoryWrapper = styled.div`
   padding-bottom: 120px;
@@ -219,14 +220,31 @@ export const ButtonWrapper = styled.div`
   display: flex;
   gap: 15px;
   align-items: center;
-  label {
+  div {
     display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
+    flex-direction: column;
+    gap: 15px;
+    label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
   }
+
+  @media (max-width: 968px) {
+    flex-direction: column;
+    gap: 5px;
+    margin: 5px;
+  }
+`;
+
+export const SelectOption = styled.select`
+  font-weight: 600;
+  padding: 8px 4px;
+  font-size: 14px;
 `;
 
 export const StickyFooter = styled.div`
@@ -299,7 +317,9 @@ export const Button = styled.button`
   color: rgba(34, 28, 23);
   transition: 0.3s;
   border-bottom: 1px solid transparent;
-
+  &:disabled {
+    opacity: 0.4;
+  }
   &:hover {
     transition: 0.3s;
     border-bottom: 1px solid rgba(34, 28, 23);

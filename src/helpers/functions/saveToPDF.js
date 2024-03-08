@@ -10,15 +10,13 @@ pdfMake.fonts = {
     bolditalics: "NimbusSanL-BolIta.otf",
   },
 };
-export const generatePDF = (listState, pdfFieldsSettings) => {
+export const generatePDF = (listState, pdfFieldsSettings, selectdUser) => {
   let exportedData = listState.map((list) => {
     return {
       ...list,
       items: list.items.filter((item) => item.quantity > 0),
     };
   });
-
-  console.log("filtered", exportedData);
   var docDefinition = {
     content: [
       {
@@ -30,6 +28,13 @@ export const generatePDF = (listState, pdfFieldsSettings) => {
         style: "header",
         alignment: "center",
         margin: [0, 10, 0, 10],
+      },
+    ],
+    footer: [
+      {
+        image: pdfImages.footer,
+        width: 500,
+        margin: [50, -40],
       },
     ],
     styles: {
@@ -69,53 +74,37 @@ export const generatePDF = (listState, pdfFieldsSettings) => {
       //   style: "tableHeader",
       // }));
       let tableHead = data.titles
-      .map(({ name }) => {
-        if (
-          name !== "Коеф складності" &&
-          (
+        .map(({ name }) => {
+          if (
+            name !== "Коеф складності" &&
             !(!pdfFieldsSettings.priceWithTAX && name === "Сума з ПДВ") &&
             !(!pdfFieldsSettings.priceWithoutTAX && name === "Сума без ПДВ")
-          )
-        ) {
-          return {
-            text: name,
-            style: "tableHeader",
-            alignment: "center",
-          };
-        }
-      })
-      .filter((item) => item !== undefined);
+          ) {
+            return {
+              text: name,
+              style: "tableHeader",
+              alignment: "center",
+            };
+          }
+        })
+        .filter((item) => item !== undefined);
 
       let tableBody = data.items.map(
-        ({
-          workType,
-          quantity,
-          unit,
-          price,
-          sumWithoutTax,
-          sumWithTax,
-        }) => {
-          const bodyRow = [
-            workType,
-            quantity,
-            unit,
-            price.toFixed(0) + "грн",
-          ];
-      
+        ({ workType, quantity, unit, price, sumWithoutTax, sumWithTax }) => {
+          const bodyRow = [workType, quantity, unit, price.toFixed(0) + "грн"];
+
           if (pdfFieldsSettings.priceWithTAX) {
             bodyRow.push(sumWithTax.toFixed(0) + "грн");
           }
-      
+
           if (pdfFieldsSettings.priceWithoutTAX) {
             bodyRow.push(sumWithoutTax.toFixed(0) + "грн");
           }
-      
+
           return bodyRow;
         }
       );
 
-      console.log(tableBody);
-      console.log(tableHead);
       docDefinition.content.push({
         style: "tableExample",
         alignment: "center",
@@ -148,8 +137,17 @@ export const generatePDF = (listState, pdfFieldsSettings) => {
   });
 
   docDefinition.content.push({
-    image: pdfImages.footer,
-    width: 500,
+    text: `З повагою,
+    ${selectdUser.name}
+    ${selectdUser.role}
+    ТОВ "Елефант-Комфорт"
+    Контакти ТОВ "Елефант-Комфорт":
+    Адреса: 10001 м. Житомир, проспект Незалежності, 184, офіс 213.
+    Мобільний телефон: ${selectdUser.phone}
+    Сайт: www.profkomfort.com.ua
+    Ел.почта: ${selectdUser.email}
+    `,
+    fontSize: 12
   });
 
   pdfMake.createPdf(docDefinition).download();
