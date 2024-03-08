@@ -82,9 +82,11 @@ function App() {
 
   useEffect(async () => {
     const docRef = doc(db, `listData`, "listData");
+    const docRefUsers = doc(db, `listData`, "users");
     const docSnap = await getDoc(docRef);
+    const docSnapUsers = await getDoc(docRefUsers);
     dispatch(setListFBData(docSnap.data().listData));
-    setUsers(docSnap.data().users);
+    setUsers(docSnapUsers.data().users);
   }, []);
 
   useEffect(() => {
