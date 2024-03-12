@@ -72,21 +72,20 @@ export const ItemContainer = styled.div`
           border-right: 1px solid grey;
           border-top: 1px solid grey;
           line-height: normal;
-          padding: 10px 0;
         }
 
         .worktype {
           width: 350px;
           min-width: 300px;
-          color: rgba(34, 28, 23);
-          font-weight: 600;
+          color: black
+          font-weight: 700;
           border-bottom: 1px solid grey;
           border-right: 1px solid grey;
           text-align: start;
           line-height: normal;
         }
         td {
-          padding: 20px 10px;
+          padding: 2px 10px;
           min-width: 75px;
           border-right: 1px solid grey;
           border-bottom: 1px solid grey;
@@ -107,9 +106,7 @@ export const ItemContainer = styled.div`
             position: absolute;
             right: 0;
             top: 0;
-            bottom: 0;
             margin: auto;
-            transform: translateY(0%);
             cursor: pointer;
             &:hover {
               transition: 0.3s;
@@ -118,7 +115,7 @@ export const ItemContainer = styled.div`
           input {
             background-color: transparent;
             width: 80%;
-            padding: 16px 8px 16px 8px;
+            padding: 5px 8px 5px 8px;
             font-size: 16px;
             font-weight: 600;
             @media (max-width: 968px) {
@@ -138,7 +135,7 @@ export const ItemContainer = styled.div`
 
 export const TableTR = styled.tr`
   background-color: ${({ quantity }) =>
-    quantity ? `rgb(232, 237, 238);` : "transparent"};
+    quantity ? `yellow;` : "transparent"};
 `;
 
 export const ExpandAccordion = styled.div`
@@ -202,7 +199,7 @@ export const TotalSum = styled.div`
     font-size: 14px;
     gap: 10px;
   }
-  color: darkgrey;
+  color: black;
   u {
     font-weight: bold;
     font-size: 20px;

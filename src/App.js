@@ -34,13 +34,12 @@ function App() {
   const { db } = useContext(Context);
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
-      let filteredList = listState?.filter(
-        (item) =>
-          item.name.toLowerCase().includes(filterTerm.toLowerCase()) ||
-          item.items.some((work) =>
-            work.workType.toLowerCase().includes(filterTerm.toLowerCase())
-          )
-      );
+      let filteredList = listState?.map((item) => ({
+        ...item,
+        items: item.items.filter((work) =>
+          work.workType.toLowerCase().includes(filterTerm.toLowerCase())
+        ),
+      }));
       setFilteredState(filteredList);
     }, 300);
 
@@ -125,10 +124,12 @@ function App() {
         </PageWrapper>
 
         {filteredState?.map((list) => {
-          return <ListCategory key={list.id} list={list} />;
+          return filterTerm && list.items.length === 0 ? null : (
+            <ListCategory key={list.id} list={list} />
+          );
         })}
         <PageWrapper>
-          <AddButton onClick={() => handleAddNewCattegory()}>+</AddButton>;
+          <AddButton onClick={() => handleAddNewCattegory()}>+</AddButton>
         </PageWrapper>
       </CattegoryWrapper>
 

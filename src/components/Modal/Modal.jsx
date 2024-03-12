@@ -11,7 +11,6 @@ function Modal({ modalState }) {
   const closeModal = () => {
     dispatch(setCurrentModal({ state: false, flag: "", info: {} }));
   };
-  console.log(modalState);
   const actions = {
     deleteCattegory: (info) => {
       dispatch(
