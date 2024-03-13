@@ -85,7 +85,6 @@ function ListBody({ list }) {
       })
     );
   };
-
   return (
     <tbody>
       {list.items.map(

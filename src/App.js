@@ -127,7 +127,7 @@ function App() {
         </PageWrapper>
 
         {filteredState?.map((list) => {
-          return filterTerm && list.items.length === 0 ? null : (
+          return (
             <ListCategory
               key={list.id}
               list={list}

@@ -135,7 +135,7 @@ export const ItemContainer = styled.div`
 
 export const TableTR = styled.tr`
   background-color: ${({ quantity }) =>
-    quantity ? `yellow;` : "transparent"};
+    quantity > 0 ? `yellow;` : "transparent"};
 `;
 
 export const ExpandAccordion = styled.div`
