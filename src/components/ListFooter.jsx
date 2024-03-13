@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { updateListData } from "../store/actions/list";
 import { generateRandomId } from "../helpers/functions/randomId";
 
-function ListFooter({ list }) {
+function ListFooter({ list, setFilterTerm }) {
   const dispatch = useDispatch();
   const itemTemplate = {
     id: generateRandomId(),
@@ -18,7 +18,8 @@ function ListFooter({ list }) {
   };
   return (
     <Button
-      onClick={() =>
+      onClick={() => (
+        setFilterTerm(""),
         dispatch(
           updateListData({
             id: list.id,
@@ -26,7 +27,7 @@ function ListFooter({ list }) {
             items: list.items.concat(itemTemplate),
           })
         )
-      }
+      )}
       style={{
         fontSize: "18px",
         color: "darkred",

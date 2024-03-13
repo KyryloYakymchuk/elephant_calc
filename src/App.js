@@ -36,9 +36,12 @@ function App() {
     const delayDebounceFn = setTimeout(() => {
       let filteredList = listState?.map((item) => ({
         ...item,
-        items: item.items.filter((work) =>
-          work.workType.toLowerCase().includes(filterTerm.toLowerCase())
-        ),
+        items: item.items.map((work) => ({
+          ...work,
+          hidden: !work.workType
+            .toLowerCase()
+            .includes(filterTerm.toLowerCase()),
+        })),
       }));
       setFilteredState(filteredList);
     }, 300);
@@ -98,9 +101,9 @@ function App() {
           complexity: 1,
           sumWithTax: 0,
           sumWithoutTax: 0,
+          hidden: false,
         })),
       }));
-
       setDoc(doc(db, `listData`, "listData"), {
         listData: updatedListState,
       });
@@ -125,7 +128,11 @@ function App() {
 
         {filteredState?.map((list) => {
           return filterTerm && list.items.length === 0 ? null : (
-            <ListCategory key={list.id} list={list} />
+            <ListCategory
+              key={list.id}
+              list={list}
+              setFilterTerm={setFilterTerm}
+            />
           );
         })}
         <PageWrapper>

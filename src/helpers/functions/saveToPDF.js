@@ -93,12 +93,13 @@ export const generatePDF = (listState, pdfFieldsSettings, selectdUser) => {
         ({ workType, quantity, unit, price, sumWithoutTax, sumWithTax }) => {
           const bodyRow = [workType, quantity, unit, price.toFixed(0) + "грн"];
 
-          if (pdfFieldsSettings.priceWithTAX) {
-            bodyRow.push(sumWithTax.toFixed(0) + "грн");
-          }
-
+          
           if (pdfFieldsSettings.priceWithoutTAX) {
             bodyRow.push(sumWithoutTax.toFixed(0) + "грн");
+          }
+
+          if (pdfFieldsSettings.priceWithTAX) {
+            bodyRow.push(sumWithTax.toFixed(0) + "грн");
           }
 
           return bodyRow;

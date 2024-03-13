@@ -1,10 +1,8 @@
-import React from 'react'
-import ListItems from '../components/ListItems'
+import React from "react";
+import ListItems from "../components/ListItems";
 
-function ListCategory({list}) {
-  return (
-    <ListItems list={list}/>
-  )
+function ListCategory({ list, setFilterTerm }) {
+  return <ListItems list={list} setFilterTerm={setFilterTerm} />;
 }
 
-export default ListCategory
+export default ListCategory;

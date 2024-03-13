@@ -368,10 +368,10 @@ const listReducer = (state = initialState, action) => {
         name: "Од. виміру",
         id: 3,
       },
-      {
-        name: "Коеф складності",
-        id: 4,
-      },
+      // {
+      //   name: "Коеф складності",
+      //   id: 4,
+      // },
       {
         name: "Ціна",
         id: 5,
@@ -395,6 +395,7 @@ const listReducer = (state = initialState, action) => {
         price: 0,
         sumWithoutTax: 0,
         sumWithTax: 0,
+        hidden: false,
       },
     ],
   };

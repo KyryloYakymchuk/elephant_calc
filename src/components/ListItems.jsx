@@ -7,7 +7,7 @@ import ListHead from "./ListHead";
 import ListAccordeon from "./ListAccordeon";
 import ListFooter from "./ListFooter";
 
-const ListItems = ({ list }) => {
+const ListItems = ({ list, setFilterTerm }) => {
   const [expandedState, setExpandedState] = useState(true);
   const [editedTitles, setEditedTitles] = useState({});
 
@@ -30,7 +30,7 @@ const ListItems = ({ list }) => {
           />
           <ListBody list={list} />
         </table>
-        <ListFooter list={list} />
+        <ListFooter list={list} setFilterTerm={setFilterTerm} />
       </div>
     </ItemContainer>
   );
